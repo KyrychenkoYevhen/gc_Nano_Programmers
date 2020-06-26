@@ -1,0 +1,1199 @@
+$0000: $940C:  J: goto $37F
+$0001: $037F:  
+$0002: $9518:  J: RETI
+$0003: $0000:  J: NOP
+$0004: $9518:  J: RETI
+$0005: $0000:  J: NOP
+$0006: $9518:  J: RETI
+$0007: $0000:  J: NOP
+$0008: $9518:  J: RETI
+$0009: $0000:  J: NOP
+$000A: $9518:  J: RETI
+$000B: $0000:  J: NOP
+$000C: $9518:  J: RETI
+$000D: $0000:  J: NOP
+$000E: $9518:  J: RETI
+$000F: $0000:  J: NOP
+$0010: $9518:  J: RETI
+$0011: $0000:  J: NOP
+$0012: $9518:  J: RETI
+$0013: $0000:  J: NOP
+$0014: $9518:  J: RETI
+$0015: $0000:  J: NOP
+$0016: $9518:  J: RETI
+$0017: $0000:  J: NOP
+$0018: $9518:  J: RETI
+$0019: $0000:  J: NOP
+$001A: $9518:  J: RETI
+$001B: $0000:  J: NOP
+$001C: $9518:  J: RETI
+$001D: $0000:  J: NOP
+$001E: $9518:  J: RETI
+$001F: $0000:  J: NOP
+$0020: $9518:  J: RETI
+$0021: $0000:  J: NOP
+$0022: $9518:  J: RETI
+$0023: $0000:  J: NOP
+$0024: $940C:  J: goto $34
+$0025: $0034:  
+$0026: $9518:  J: RETI
+$0027: $0000:  J: NOP
+$0028: $9518:  J: RETI
+$0029: $0000:  J: NOP
+$002A: $9518:  J: RETI
+$002B: $0000:  J: NOP
+$002C: $9518:  J: RETI
+$002D: $0000:  J: NOP
+$002E: $9518:  J: RETI
+$002F: $0000:  J: NOP
+$0030: $9518:  J: RETI
+$0031: $0000:  J: NOP
+$0032: $9518:  J: RETI
+$0033: $0000:  J: NOP
+*********   D:\anwork\ArduinoISP\ALG328\USART.alg    ***********
+-----          V: USART0_Receive_Complete
+$0034: $C34A:  J: goto $37F (RJMP)
+-----          V: usart_ReceiveByte_
+               F: 50000 -> X  ...
+$0035: $E5A0:     $50 -> r26
+$0036: $ECB3:     $C3 -> r27
+-----          L: 
+$0037: $9711:  F: r26,r27 - $01 (X - 1)
+$0038: $F409:  C: if (Z=0) then goto $3A (=)
+$0039: $C345:  C: goto $37F (RJMP) (=)
+               C: if (RXC0 = 0) then goto $0037 ...
+$003A: $9100:     [$00C0] -> r16
+$003B: $00C0:  
+$003C: $FF07:     if (r16.7=1 then SKIP
+$003D: $CFF9:     goto $37 (RJMP)
+               F: 1 -> RXC0  ...
+$003E: $9100:     [$00C0] -> r16
+$003F: $00C0:  
+$0040: $6800:     r16 ! $80
+$0041: $9300:     r16 -> [$00C0]
+$0042: $00C0:  
+$0043: $94A3:  F: r10 ++ (BytesReceived ++)
+$0044: $9120:  F: [$00C6] -> r18 (UDR0 -> r18)
+$0045: $00C6:  
+$0046: $2F02:  F: r18 -> r16 (r18 -> r16)
+$0047: $D23A:  F: rcall $282 (crc_Add_)
+$0048: $9508:  F: RET (Ret)
+-----          V: usart_TransmitByte_
+               F: 10000 -> X  ...
+$0049: $E1A0:     $10 -> r26
+$004A: $E2B7:     $27 -> r27
+-----          L: 
+$004B: $9711:  F: r26,r27 - $01 (X - 1)
+$004C: $F409:  C: if (Z=0) then goto $4E (=)
+$004D: $C331:  C: goto $37F (RJMP) (=)
+               C: if (UDRE0 = 0) then goto $004B ...
+$004E: $9100:     [$00C0] -> r16
+$004F: $00C0:  
+$0050: $FF05:     if (r16.5=1 then SKIP
+$0051: $CFF9:     goto $4B (RJMP)
+$0052: $9320:  F: r18 -> [$00C6] (r18 -> UDR0)
+$0053: $00C6:  
+$0054: $2F02:  F: r18 -> r16 (r18 -> r16)
+$0055: $D22C:  F: rcall $282 (crc_Add_)
+$0056: $9508:  F: RET (Ret)
+-----          V: usart_WaitFor_TXC
+               F: 50000 -> X  ...
+$0057: $E5A0:     $50 -> r26
+$0058: $ECB3:     $C3 -> r27
+-----          L: 
+$0059: $9711:  F: r26,r27 - $01 (X - 1)
+$005A: $F409:  C: if (Z=0) then goto $5C (=)
+$005B: $C323:  C: goto $37F (RJMP) (=)
+               C: if (TXC0 = 0) then goto $0059 ...
+$005C: $9100:     [$00C0] -> r16
+$005D: $00C0:  
+$005E: $FF06:     if (r16.6=1 then SKIP
+$005F: $CFF9:     goto $59 (RJMP)
+               F: 1 -> TXC0  ...
+$0060: $9100:     [$00C0] -> r16
+$0061: $00C0:  
+$0062: $6400:     r16 ! $40
+$0063: $9300:     r16 -> [$00C0]
+$0064: $00C0:  
+$0065: $9508:  F: RET (Ret)
+-----          V: usart_Loop
+               F: $FFFF -> CRC  ...
+$0066: $EF0F:     $FF -> r16
+$0067: $9300:     r16 -> [$0152]
+$0068: $0152:  
+$0069: $9300:     r16 -> [$0153]
+$006A: $0153:  
+-----          L: 
+               C: if (RXC0 = 0) then goto $006B ...
+$006B: $9100:     [$00C0] -> r16
+$006C: $00C0:  
+$006D: $FF07:     if (r16.7=1 then SKIP
+$006E: $CFFC:     goto $6B (RJMP)
+$006F: $9120:  F: [$00C6] -> r18 (UDR0 -> r18)
+$0070: $00C6:  
+$0071: $2F02:  F: r18 -> r16 (r18 -> r16)
+$0072: $D20F:  F: rcall $282 (crc_Add_)
+               F: t_Performers -> Z  ...
+$0073: $E7E2:     $72 -> r30
+$0074: $E0F3:     $03 -> r31
+               F: Z + r18  ...
+$0075: $0FE2:     r30 + r18
+$0076: $E010:     $00 -> r17
+$0077: $1FF1:     r31 + r17 +
+               C: if (Z >= Performers_End) then goto $0066 ...
+$0078: $37EF:     r30 = $7F
+$0079: $E013:     $03 -> r17
+$007A: $07F1:     r31 = r17=
+$007B: $F750:     if ( >= ) then goto $66
+               F: << Z  ...
+$007C: $0FEE:     << r30
+$007D: $1FFF:     << r31 <
+               F: LPM[Z++]:Word -> W  ...
+$007E: $9185:     LPM[Z++] -> r24
+$007F: $9195:     LPM[Z++] -> r25
+$0080: $01FC:  F: r24,r25 -> r30,r31 (W -> Z)
+$0081: $9509:  F: CALL[Z] (Call[Z])
+$0082: $F71E:  C: if (T=0) then goto $66 (T = 0)
+$0083: $9508:  F: RET (Ret)
+*********   D:\anwork\ArduinoISP\ALG328\Respondents.alg    ***********
+-----          V: InitProgramming
+$0084: $DFB0:  F: rcall $35 (usart_ReceiveByte_)
+               C: if (r18 < 7) then goto $0088 ...
+$0085: $3027:     r18 = $07
+$0086: $F008:     if ( < ) then goto $88
+$0087: $E026:  F: $06 -> r18 (6 -> r18)
+-----          L: 
+$0088: $9320:  F: r18 -> [$0101] (r18 -> DecelerationIndex)
+$0089: $0101:  
+               F: t_Decelerations*2 -> Z  ...
+$008A: $EEE0:     $E0 -> r30
+$008B: $E0F3:     $03 -> r31
+               F: Z + r18  ...
+$008C: $0FE2:     r30 + r18
+$008D: $E010:     $00 -> r17
+$008E: $1FF1:     r31 + r17 +
+               F: LPM[Z] -> Deceleration  ...
+$008F: $9104:     LPM[Z] -> r16
+$0090: $9300:     r16 -> [$0100]
+$0091: $0100:  
+$0092: $DFA2:  F: rcall $35 (usart_ReceiveByte_)
+$0093: $9320:  F: r18 -> [$0102] (r18 -> FlashPageSize)
+$0094: $0102:  
+$0095: $DF9F:  F: rcall $35 (usart_ReceiveByte_)
+$0096: $9320:  F: r18 -> [$0103] (r18 -> EEPROMPageSize)
+$0097: $0103:  
+$0098: $DF9C:  F: rcall $35 (usart_ReceiveByte_)
+$0099: $9320:  F: r18 -> [$0104] (r18 -> PollReadyExists)
+$009A: $0104:  
+$009B: $D1CF:  F: rcall $26B (crc_Receive)
+$009C: $9A56:  F: 1 -> p$0A.6 (1 -> LED)
+               F: $FFFF -> CRC  ...
+$009D: $EF0F:     $FF -> r16
+$009E: $9300:     r16 -> [$0152]
+$009F: $0152:  
+$00A0: $9300:     r16 -> [$0153]
+$00A1: $0153:  
+$00A2: $E020:  F: $00 -> r18 (0 -> r18)
+$00A3: $DFA5:  F: rcall $49 (usart_TransmitByte_)
+$00A4: $E021:  F: $01 -> r18 (Version -> r18)
+$00A5: $DFA3:  F: rcall $49 (usart_TransmitByte_)
+$00A6: $D1D1:  F: rcall $278 (crc_Transmit)
+$00A7: $D16A:  F: rcall $212 (spi_Open)
+               F: BaudRates -> Z  ...
+$00A8: $EFE4:     $F4 -> r30
+$00A9: $E0F1:     $01 -> r31
+               F: Z + DecelerationIndex  ...
+$00AA: $9110:     [$0101] -> r17
+$00AB: $0101:  
+$00AC: $0FE1:     r30 + r17
+$00AD: $E010:     $00 -> r17
+$00AE: $1FF1:     r31 + r17 +
+               F: << Z  ...
+$00AF: $0FEE:     << r30
+$00B0: $1FFF:     << r31 <
+               F: LPM[Z++] -> UBRR0L  ...
+$00B1: $9105:     LPM[Z++] -> r16
+$00B2: $9300:     r16 -> [$00C4]
+$00B3: $00C4:  
+               F: LPM[Z++] -> UBRR0H  ...
+$00B4: $9105:     LPM[Z++] -> r16
+$00B5: $9300:     r16 -> [$00C5]
+$00B6: $00C5:  
+$00B7: $9508:  F: RET (Ret)
+-----          V: CallInitResult
+$00B8: $D1B2:  F: rcall $26B (crc_Receive)
+               F: $FFFF -> CRC  ...
+$00B9: $EF0F:     $FF -> r16
+$00BA: $9300:     r16 -> [$0152]
+$00BB: $0152:  
+$00BC: $9300:     r16 -> [$0153]
+$00BD: $0153:  
+$00BE: $E021:  F: $01 -> r18 (1 -> r18)
+$00BF: $DF89:  F: rcall $49 (usart_TransmitByte_)
+$00C0: $9120:  F: [$0105] -> r18 (Enabled -> r18)
+$00C1: $0105:  
+$00C2: $DF86:  F: rcall $49 (usart_TransmitByte_)
+$00C3: $D1B4:  F: rcall $278 (crc_Transmit)
+$00C4: $9508:  F: RET (Ret)
+-----          V: Instruction
+$00C5: $E034:  F: $04 -> r19 (4 -> r19)
+               F: @DataOut -> Y  ...
+$00C6: $E4CA:     $4A -> r28
+$00C7: $E0D1:     $01 -> r29
+-----          L: 
+$00C8: $DF6C:  F: rcall $35 (usart_ReceiveByte_)
+$00C9: $9329:  F: r18 -> [Y++] (r18 -> [Y++])
+               C: if (r19 --) then goto $00C8 ...
+$00CA: $953A:     r19 --
+$00CB: $F7E1:     if (Z=0) then goto $C8
+$00CC: $D19E:  F: rcall $26B (crc_Receive)
+$00CD: $D190:  F: rcall $25E (spi_SendInstruction)
+               F: $FFFF -> CRC  ...
+$00CE: $EF0F:     $FF -> r16
+$00CF: $9300:     r16 -> [$0152]
+$00D0: $0152:  
+$00D1: $9300:     r16 -> [$0153]
+$00D2: $0153:  
+$00D3: $E022:  F: $02 -> r18 (2 -> r18)
+$00D4: $DF74:  F: rcall $49 (usart_TransmitByte_)
+$00D5: $E034:  F: $04 -> r19 (4 -> r19)
+               F: @DataIn -> Y  ...
+$00D6: $E4CE:     $4E -> r28
+$00D7: $E0D1:     $01 -> r29
+-----          L: 
+$00D8: $9129:  F: [Y++] -> r18 ([Y++] -> r18)
+$00D9: $DF6F:  F: rcall $49 (usart_TransmitByte_)
+               C: if (r19 --) then goto $00D8 ...
+$00DA: $953A:     r19 --
+$00DB: $F7E1:     if (Z=0) then goto $D8
+$00DC: $D19B:  F: rcall $278 (crc_Transmit)
+$00DD: $9508:  F: RET (Ret)
+-----          V: ChipErase
+$00DE: $D18C:  F: rcall $26B (crc_Receive)
+               F: @DataOut -> X  ...
+$00DF: $E4AA:     $4A -> r26
+$00E0: $E0B1:     $01 -> r27
+               F: $AC -> [X++]  ...
+$00E1: $EA0C:     $AC -> r16
+$00E2: $930D:     r16 -> [X++]
+               F: $80 -> [X++]  ...
+$00E3: $E800:     $80 -> r16
+$00E4: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$00E5: $E000:     $00 -> r16
+$00E6: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$00E7: $930D:     r16 -> [X++]
+$00E8: $D175:  F: rcall $25E (spi_SendInstruction)
+$00E9: $E208:  F: $28 -> r16 (40 -> r16)
+$00EA: $D123:  F: rcall $20E (spi_ms_)
+$00EB: $D126:  F: rcall $212 (spi_Open)
+$00EC: $9508:  F: RET (Ret)
+-----          V: WriteProgramMemoryPage
+$00ED: $D0EE:  F: rcall $1DC (ReceiveAddress)
+$00EE: $9140:  F: [$0102] -> r20 (FlashPageSize -> r20)
+$00EF: $0102:  
+$00F0: $E050:  F: $00 -> r21 (0 -> r21)
+-----          L: 
+$00F1: $DF43:  F: rcall $35 (usart_ReceiveByte_)
+$00F2: $9320:  F: r18 -> [$014D] (r18 -> DataOut3)
+$00F3: $014D:  
+               F: @DataOut -> X  ...
+$00F4: $E4AA:     $4A -> r26
+$00F5: $E0B1:     $01 -> r27
+               F: $40 -> [X++]  ...
+$00F6: $E400:     $40 -> r16
+$00F7: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$00F8: $E000:     $00 -> r16
+$00F9: $930D:     r16 -> [X++]
+$00FA: $935D:  F: r21 -> [X++] (r21 -> [X++])
+$00FB: $D162:  F: rcall $25E (spi_SendInstruction)
+$00FC: $DF38:  F: rcall $35 (usart_ReceiveByte_)
+$00FD: $9320:  F: r18 -> [$014D] (r18 -> DataOut3)
+$00FE: $014D:  
+               F: @DataOut -> X  ...
+$00FF: $E4AA:     $4A -> r26
+$0100: $E0B1:     $01 -> r27
+               F: $48 -> [X++]  ...
+$0101: $E408:     $48 -> r16
+$0102: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$0103: $E000:     $00 -> r16
+$0104: $930D:     r16 -> [X++]
+$0105: $935D:  F: r21 -> [X++] (r21 -> [X++])
+$0106: $D157:  F: rcall $25E (spi_SendInstruction)
+$0107: $9553:  F: r21 ++ (r21 ++)
+               C: if (r20 --) then goto $00F1 ...
+$0108: $954A:     r20 --
+$0109: $F739:     if (Z=0) then goto $F1
+$010A: $D160:  F: rcall $26B (crc_Receive)
+               F: @DataOut -> X  ...
+$010B: $E4AA:     $4A -> r26
+$010C: $E0B1:     $01 -> r27
+               F: $4D -> [X++]  ...
+$010D: $E40D:     $4D -> r16
+$010E: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$010F: $E000:     $00 -> r16
+$0110: $930D:     r16 -> [X++]
+               F: Addr2 -> [X++]  ...
+$0111: $9100:     [$0108] -> r16
+$0112: $0108:  
+$0113: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$0114: $E000:     $00 -> r16
+$0115: $930D:     r16 -> [X++]
+$0116: $D147:  F: rcall $25E (spi_SendInstruction)
+               F: @DataOut -> X  ...
+$0117: $E4AA:     $4A -> r26
+$0118: $E0B1:     $01 -> r27
+               F: $4C -> [X++]  ...
+$0119: $E40C:     $4C -> r16
+$011A: $930D:     r16 -> [X++]
+               F: Addr1 -> [X++]  ...
+$011B: $9100:     [$0107] -> r16
+$011C: $0107:  
+$011D: $930D:     r16 -> [X++]
+               F: Addr0 -> [X++]  ...
+$011E: $9100:     [$0106] -> r16
+$011F: $0106:  
+$0120: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$0121: $E000:     $00 -> r16
+$0122: $930D:     r16 -> [X++]
+$0123: $D13A:  F: rcall $25E (spi_SendInstruction)
+               C: if (PollReadyExists = True) then goto $012B ...
+$0124: $9100:     [$0104] -> r16
+$0125: $0104:  
+$0126: $3001:     r16 = $01
+$0127: $F019:     if (Z=1) then goto $12B
+$0128: $E00A:  F: $0A -> r16 (10 -> r16)
+$0129: $D0E4:  F: rcall $20E (spi_ms_)
+$012A: $C012:  J: goto $13D (RJMP)
+-----          V: 
+$012B: $E144:  F: $14 -> r20 (20 -> r20)
+-----          L: 
+$012C: $D0DA:  F: rcall $207 (spi_1_ms)
+               F: @DataOut -> X  ...
+$012D: $E4AA:     $4A -> r26
+$012E: $E0B1:     $01 -> r27
+               F: $F0 -> [X++]  ...
+$012F: $EF00:     $F0 -> r16
+$0130: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$0131: $E000:     $00 -> r16
+$0132: $930D:     r16 -> [X++]
+               F: $FF -> [X++]  ...
+$0133: $EF0F:     $FF -> r16
+$0134: $930D:     r16 -> [X++]
+               F: $FF -> [X++]  ...
+$0135: $930D:     r16 -> [X++]
+$0136: $D127:  F: rcall $25E (spi_SendInstruction)
+               C: if (DataIn3.1 = 0) then goto $013D ...
+$0137: $9100:     [$0151] -> r16
+$0138: $0151:  
+$0139: $FF01:     if (r16.1=1 then SKIP
+$013A: $C002:     goto $13D (RJMP)
+               C: if (r20 --) then goto $012C ...
+$013B: $954A:     r20 --
+$013C: $F779:     if (Z=0) then goto $12C
+-----          L: 
+$013D: $D001:  F: rcall $13F (TransmitProgramMemoryPage)
+$013E: $9508:  F: RET (Ret)
+-----          V: TransmitProgramMemoryPage
+               F: $FFFF -> CRC  ...
+$013F: $EF0F:     $FF -> r16
+$0140: $9300:     r16 -> [$0152]
+$0141: $0152:  
+$0142: $9300:     r16 -> [$0153]
+$0143: $0153:  
+               F: @DataOut -> X  ...
+$0144: $E4AA:     $4A -> r26
+$0145: $E0B1:     $01 -> r27
+               F: $4D -> [X++]  ...
+$0146: $E40D:     $4D -> r16
+$0147: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$0148: $E000:     $00 -> r16
+$0149: $930D:     r16 -> [X++]
+               F: Addr2 -> [X++]  ...
+$014A: $9100:     [$0108] -> r16
+$014B: $0108:  
+$014C: $930D:     r16 -> [X++]
+               F: $00 -> [X++]  ...
+$014D: $E000:     $00 -> r16
+$014E: $930D:     r16 -> [X++]
+$014F: $D10E:  F: rcall $25E (spi_SendInstruction)
+$0150: $9140:  F: [$0102] -> r20 (FlashPageSize -> r20)
+$0151: $0102:  
+$0152: $9150:  F: [$0106] -> r21 (Addr0 -> r21)
+$0153: $0106:  
+-----          L: 
+               F: @DataOut -> X  ...
+$0154: $E4AA:     $4A -> r26
+$0155: $E0B1:     $01 -> r27
+               F: $20 -> [X++]  ...
+$0156: $E200:     $20 -> r16
+$0157: $930D:     r16 -> [X++]
+               F: Addr1 -> [X++]  ...
+$0158: $9100:     [$0107] -> r16
+$0159: $0107:  
+$015A: $930D:     r16 -> [X++]
+$015B: $935D:  F: r21 -> [X++] (r21 -> [X++])
+               F: $FF -> [X++]  ...
+$015C: $EF0F:     $FF -> r16
+$015D: $930D:     r16 -> [X++]
+$015E: $D0FF:  F: rcall $25E (spi_SendInstruction)
+$015F: $9120:  F: [$0151] -> r18 (DataIn3 -> r18)
+$0160: $0151:  
+$0161: $DEE7:  F: rcall $49 (usart_TransmitByte_)
+               F: $28 -> DataOut0  ...
+$0162: $E208:     $28 -> r16
+$0163: $9300:     r16 -> [$014A]
+$0164: $014A:  
+$0165: $D0F8:  F: rcall $25E (spi_SendInstruction)
+$0166: $9120:  F: [$0151] -> r18 (DataIn3 -> r18)
+$0167: $0151:  
+$0168: $DEE0:  F: rcall $49 (usart_TransmitByte_)
+$0169: $9553:  F: r21 ++ (r21 ++)
+               C: if (r20 --) then goto $0154 ...
+$016A: $954A:     r20 --
+$016B: $F741:     if (Z=0) then goto $154
+$016C: $9533:  F: r19 ++ (r19 ++)
+$016D: $D10A:  F: rcall $278 (crc_Transmit)
+$016E: $9508:  F: RET (Ret)
+-----          V: ReceiveEEPROMPageInfo
+$016F: $DEC5:  F: rcall $35 (usart_ReceiveByte_)
+$0170: $9320:  F: r18 -> [$0106] (r18 -> Addr0)
+$0171: $0106:  
+$0172: $DEC2:  F: rcall $35 (usart_ReceiveByte_)
+$0173: $9320:  F: r18 -> [$0107] (r18 -> Addr1)
+$0174: $0107:  
+$0175: $DEBF:  F: rcall $35 (usart_ReceiveByte_)
+$0176: $9320:  F: r18 -> [$0149] (r18 -> PageSize)
+$0177: $0149:  
+$0178: $9508:  F: RET (Ret)
+-----          V: ReadEEPROMMemoryPage
+$0179: $DFF5:  F: rcall $16F (ReceiveEEPROMPageInfo)
+$017A: $D0F0:  F: rcall $26B (crc_Receive)
+$017B: $D001:  F: rcall $17D (TransmitEEPROMMemoryPage)
+$017C: $9508:  F: RET (Ret)
+-----          V: TransmitEEPROMMemoryPage
+               F: $FFFF -> CRC  ...
+$017D: $EF0F:     $FF -> r16
+$017E: $9300:     r16 -> [$0152]
+$017F: $0152:  
+$0180: $9300:     r16 -> [$0153]
+$0181: $0153:  
+$0182: $9140:  F: [$0149] -> r20 (PageSize -> r20)
+$0183: $0149:  
+               F: $A0 -> DataOut0  ...
+$0184: $EA00:     $A0 -> r16
+$0185: $9300:     r16 -> [$014A]
+$0186: $014A:  
+               F: Addr1 -> DataOut1  ...
+$0187: $9100:     [$0107] -> r16
+$0188: $0107:  
+$0189: $9300:     r16 -> [$014B]
+$018A: $014B:  
+               F: $FF -> DataOut3  ...
+$018B: $EF0F:     $FF -> r16
+$018C: $9300:     r16 -> [$014D]
+$018D: $014D:  
+$018E: $9150:  F: [$0106] -> r21 (Addr0 -> r21)
+$018F: $0106:  
+-----          L: 
+$0190: $9350:  F: r21 -> [$014C] (r21 -> DataOut2)
+$0191: $014C:  
+$0192: $D0CB:  F: rcall $25E (spi_SendInstruction)
+$0193: $9120:  F: [$0151] -> r18 (DataIn3 -> r18)
+$0194: $0151:  
+$0195: $DEB3:  F: rcall $49 (usart_TransmitByte_)
+$0196: $9553:  F: r21 ++ (r21 ++)
+               C: if (r20 --) then goto $0190 ...
+$0197: $954A:     r20 --
+$0198: $F7B9:     if (Z=0) then goto $190
+$0199: $D0DE:  F: rcall $278 (crc_Transmit)
+$019A: $9508:  F: RET (Ret)
+-----          V: WriteEEPROMMemoryPage
+$019B: $DFD3:  F: rcall $16F (ReceiveEEPROMPageInfo)
+               F: @Buffer -> Z  ...
+$019C: $E0E9:     $09 -> r30
+$019D: $E0F1:     $01 -> r31
+$019E: $9140:  F: [$0149] -> r20 (PageSize -> r20)
+$019F: $0149:  
+-----          L: 
+$01A0: $DE94:  F: rcall $35 (usart_ReceiveByte_)
+$01A1: $9321:  F: r18 -> [Z++] (r18 -> [Z++])
+               C: if (r20 --) then goto $01A0 ...
+$01A2: $954A:     r20 --
+$01A3: $F7E1:     if (Z=0) then goto $1A0
+$01A4: $D0C6:  F: rcall $26B (crc_Receive)
+               F: $C0 -> DataOut0  ...
+$01A5: $EC00:     $C0 -> r16
+$01A6: $9300:     r16 -> [$014A]
+$01A7: $014A:  
+               F: Addr1 -> DataOut1  ...
+$01A8: $9100:     [$0107] -> r16
+$01A9: $0107:  
+$01AA: $9300:     r16 -> [$014B]
+$01AB: $014B:  
+               F: $FF -> DataOut3  ...
+$01AC: $EF0F:     $FF -> r16
+$01AD: $9300:     r16 -> [$014D]
+$01AE: $014D:  
+               F: @Buffer -> Z  ...
+$01AF: $E0E9:     $09 -> r30
+$01B0: $E0F1:     $01 -> r31
+$01B1: $9150:  F: [$0106] -> r21 (Addr0 -> r21)
+$01B2: $0106:  
+$01B3: $9140:  F: [$0149] -> r20 (PageSize -> r20)
+$01B4: $0149:  
+-----          L: 
+$01B5: $9350:  F: r21 -> [$014C] (r21 -> DataOut2)
+$01B6: $014C:  
+               F: [Z++] -> DataOut3  ...
+$01B7: $9101:     [Z++] -> r16
+$01B8: $9300:     r16 -> [$014D]
+$01B9: $014D:  
+$01BA: $D0A3:  F: rcall $25E (spi_SendInstruction)
+$01BB: $E00A:  F: $0A -> r16 (10 -> r16)
+$01BC: $D051:  F: rcall $20E (spi_ms_)
+$01BD: $9553:  F: r21 ++ (r21 ++)
+               C: if (r20 --) then goto $01B5 ...
+$01BE: $954A:     r20 --
+$01BF: $F7A9:     if (Z=0) then goto $1B5
+$01C0: $DFBC:  F: rcall $17D (TransmitEEPROMMemoryPage)
+$01C1: $9508:  F: RET (Ret)
+-----          V: FreePort
+$01C2: $D0A8:  F: rcall $26B (crc_Receive)
+$01C3: $D037:  F: rcall $1FB (spi_Free)
+               F: $FFFF -> CRC  ...
+$01C4: $EF0F:     $FF -> r16
+$01C5: $9300:     r16 -> [$0152]
+$01C6: $0152:  
+$01C7: $9300:     r16 -> [$0153]
+$01C8: $0153:  
+$01C9: $E025:  F: $05 -> r18 (5 -> r18)
+$01CA: $DE7E:  F: rcall $49 (usart_TransmitByte_)
+$01CB: $D0AC:  F: rcall $278 (crc_Transmit)
+$01CC: $C1B2:  J: goto $37F (RJMP)
+-----          V: ResetChip
+$01CD: $D09D:  F: rcall $26B (crc_Receive)
+$01CE: $D070:  F: rcall $23F (spi_ResetChip)
+$01CF: $982A:  F: 0 -> p$05.2 (0 -> spi_Reset)
+$01D0: $9A22:  F: 1 -> p$04.2 (1 -> spi_DD_Reset)
+$01D1: $D035:  F: rcall $207 (spi_1_ms)
+$01D2: $9822:  F: 0 -> p$04.2 (0 -> spi_DD_Reset)
+               F: $FFFF -> CRC  ...
+$01D3: $EF0F:     $FF -> r16
+$01D4: $9300:     r16 -> [$0152]
+$01D5: $0152:  
+$01D6: $9300:     r16 -> [$0153]
+$01D7: $0153:  
+$01D8: $E028:  F: $08 -> r18 (8 -> r18)
+$01D9: $DE6F:  F: rcall $49 (usart_TransmitByte_)
+$01DA: $D09D:  F: rcall $278 (crc_Transmit)
+$01DB: $9508:  F: RET (Ret)
+-----          V: ReceiveAddress
+               F: @Addr0 -> Y  ...
+$01DC: $E0C6:     $06 -> r28
+$01DD: $E0D1:     $01 -> r29
+$01DE: $E043:  F: $03 -> r20 (3 -> r20)
+-----          L: 
+$01DF: $DE55:  F: rcall $35 (usart_ReceiveByte_)
+$01E0: $9329:  F: r18 -> [Y++] (r18 -> [Y++])
+               C: if (r20 --) then goto $01DF ...
+$01E1: $954A:     r20 --
+$01E2: $F7E1:     if (Z=0) then goto $1DF
+$01E3: $9508:  F: RET (Ret)
+-----          V: ReadProgramMemoryPage
+$01E4: $DFF7:  F: rcall $1DC (ReceiveAddress)
+$01E5: $DE4F:  F: rcall $35 (usart_ReceiveByte_)
+$01E6: $9320:  F: r18 -> [$0102] (r18 -> FlashPageSize)
+$01E7: $0102:  
+$01E8: $D082:  F: rcall $26B (crc_Receive)
+               F: $FFFF -> CRC  ...
+$01E9: $EF0F:     $FF -> r16
+$01EA: $9300:     r16 -> [$0152]
+$01EB: $0152:  
+$01EC: $9300:     r16 -> [$0153]
+$01ED: $0153:  
+$01EE: $DF50:  F: rcall $13F (TransmitProgramMemoryPage)
+$01EF: $9508:  F: RET (Ret)
+-----          V: t_Decelerations
+$01F0: $01 $06 $0B $19 $36 $70 $E0 $00
+-----          L: BaudRates
+$01F4: $10 $00 $22 $00 $33 $00 $67 $00 $CF $00 $A0 $01 $40 $03
+*********   D:\anwork\ArduinoISP\ALG328\SPI.alg    ***********
+-----          V: spi_Free
+$01FB: $9822:  F: 0 -> p$04.2 (0 -> spi_DD_Reset)
+$01FC: $9825:  F: 0 -> p$04.5 (0 -> spi_DD_SCK)
+$01FD: $9823:  F: 0 -> p$04.3 (0 -> spi_DD_Out)
+$01FE: $9824:  F: 0 -> p$04.4 (0 -> spi_DD_In)
+$01FF: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+$0200: $982A:  F: 0 -> p$05.2 (0 -> spi_Reset)
+$0201: $982D:  F: 0 -> p$05.5 (0 -> spi_SCK)
+$0202: $982B:  F: 0 -> p$05.3 (0 -> spi_Out)
+$0203: $981C:  F: 0 -> p$03.4 (0 -> spi_In)
+$0204: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+$0205: $9856:  F: 0 -> p$0A.6 (0 -> LED)
+$0206: $9508:  F: RET (Ret)
+-----          V: spi_1_ms
+               F: 3198 -> X  ...
+$0207: $E7AE:     $7E -> r26
+$0208: $E0BC:     $0C -> r27
+-----          L: 
+$0209: $0000:  F: NOP (NOP)
+               C: if (X --) then goto $0209 ...
+$020A: $50A1:     r26 - $01
+$020B: $40B0:     r27 - $00 -
+$020C: $F7E1:     if (Z=0) then goto $209
+$020D: $9508:  F: RET (Ret)
+-----          V: spi_ms_
+$020E: $DFF8:  F: rcall $207 (spi_1_ms)
+               C: if (r16 --) then goto $020E ...
+$020F: $950A:     r16 --
+$0210: $F7E9:     if (Z=0) then goto $20E
+$0211: $9508:  F: RET (Ret)
+-----          V: spi_Open
+$0212: $982A:  F: 0 -> p$05.2 (0 -> spi_Reset)
+$0213: $982D:  F: 0 -> p$05.5 (0 -> spi_SCK)
+$0214: $982B:  F: 0 -> p$05.3 (0 -> spi_Out)
+$0215: $981C:  F: 0 -> p$03.4 (0 -> spi_In)
+$0216: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+$0217: $9A22:  F: 1 -> p$04.2 (1 -> spi_DD_Reset)
+$0218: $9A25:  F: 1 -> p$04.5 (1 -> spi_DD_SCK)
+$0219: $9A23:  F: 1 -> p$04.3 (1 -> spi_DD_Out)
+-----          L: 
+$021A: $DFEC:  F: rcall $207 (spi_1_ms)
+$021B: $9A2A:  F: 1 -> p$05.2 (1 -> spi_Reset)
+$021C: $DFEA:  F: rcall $207 (spi_1_ms)
+$021D: $982A:  F: 0 -> p$05.2 (0 -> spi_Reset)
+$021E: $E208:  F: $28 -> r16 (40 -> r16)
+$021F: $DFEE:  F: rcall $20E (spi_ms_)
+$0220: $E240:  F: $20 -> r20 (32 -> r20)
+               F: 1 -> Enabled  ...
+$0221: $E001:     $01 -> r16
+$0222: $9300:     r16 -> [$0105]
+$0223: $0105:  
+-----          L: 
+               F: $AC -> [@DataOut+0]  ...
+$0224: $EA0C:     $AC -> r16
+$0225: $9300:     r16 -> [$014A]
+$0226: $014A:  
+               F: $53 -> [@DataOut+1]  ...
+$0227: $E503:     $53 -> r16
+$0228: $9300:     r16 -> [$014B]
+$0229: $014B:  
+$022A: $D033:  F: rcall $25E (spi_SendInstruction)
+               C: if ([@DataIn+2] = $53) then goto $0235 ...
+$022B: $9100:     [$0150] -> r16
+$022C: $0150:  
+$022D: $3503:     r16 = $53
+$022E: $F031:     if (Z=1) then goto $235
+               C: if (r20 --) then goto $0236 ...
+$022F: $954A:     r20 --
+$0230: $F429:     if (Z=0) then goto $236
+$0231: $DFC9:  F: rcall $1FB (spi_Free)
+               F: 0 -> Enabled  ...
+$0232: $E000:     $00 -> r16
+$0233: $9300:     r16 -> [$0105]
+$0234: $0105:  
+-----          L: 
+$0235: $9508:  F: RET (Ret)
+-----          V: 
+$0236: $2C12:  F: r2 -> r1 (r2 -> r1)
+-----          L: 
+               C: if (r1 --) then goto $0237 ...
+$0237: $941A:     r1 --
+$0238: $F7F1:     if (Z=0) then goto $237
+$0239: $9A2D:  F: 1 -> p$05.5 (1 -> spi_SCK)
+$023A: $2C12:  F: r2 -> r1 (r2 -> r1)
+-----          L: 
+               C: if (r1 --) then goto $023B ...
+$023B: $941A:     r1 --
+$023C: $F7F1:     if (Z=0) then goto $23B
+$023D: $982D:  F: 0 -> p$05.5 (0 -> spi_SCK)
+$023E: $CFE5:  J: goto $224 (RJMP)
+-----          V: spi_ResetChip
+$023F: $982A:  F: 0 -> p$05.2 (0 -> spi_Reset)
+$0240: $9A22:  F: 1 -> p$04.2 (1 -> spi_DD_Reset)
+$0241: $DFC5:  F: rcall $207 (spi_1_ms)
+$0242: $9822:  F: 0 -> p$04.2 (0 -> spi_DD_Reset)
+$0243: $9508:  F: RET (Ret)
+-----          V: spi_SendByte
+$0244: $E028:  F: $08 -> r18 (8 -> r18)
+$0245: $E010:  F: $00 -> r17 (0 -> r17)
+-----          L: 
+$0246: $FC07:  C: if (r0.7=0 then SKIP (r0.7 = 1)
+$0247: $C002:  C: goto $24A (RJMP) (r0.7 = 1)
+$0248: $982B:  F: 0 -> p$05.3 (0 -> spi_Out)
+$0249: $C002:  J: goto $24C (RJMP)
+-----          V: 
+$024A: $9A2B:  F: 1 -> p$05.3 (1 -> spi_Out)
+$024B: $0000:  F: NOP (NOP)
+-----          L: 
+$024C: $2C12:  F: r2 -> r1 (r2 -> r1)
+-----          L: 
+               C: if (r1 --) then goto $024D ...
+$024D: $941A:     r1 --
+$024E: $F7F1:     if (Z=0) then goto $24D
+$024F: $9A2D:  F: 1 -> p$05.5 (1 -> spi_SCK)
+$0250: $991C:  C: if (p$03.4=0 then SKIP (spi_In = 1)
+$0251: $C002:  C: goto $254 (RJMP) (spi_In = 1)
+$0252: $9488:  F: 0 -> .C (0 -> C)
+$0253: $C002:  J: goto $256 (RJMP)
+-----          V: 
+$0254: $9408:  F: 1 -> .C (1 -> C)
+$0255: $0000:  F: NOP (NOP)
+-----          L: 
+$0256: $1C00:  F: << r0 < (<< r0 <)
+$0257: $2C12:  F: r2 -> r1 (r2 -> r1)
+-----          L: 
+               C: if (r1 --) then goto $0258 ...
+$0258: $941A:     r1 --
+$0259: $F7F1:     if (Z=0) then goto $258
+$025A: $982D:  F: 0 -> p$05.5 (0 -> spi_SCK)
+               C: if (r18 --) then goto $0246 ...
+$025B: $952A:     r18 --
+$025C: $F749:     if (Z=0) then goto $246
+$025D: $9508:  F: RET (Ret)
+-----          V: spi_SendInstruction
+$025E: $9020:  F: [$0100] -> r2 (Deceleration -> r2)
+$025F: $0100:  
+               F: @DataOut -> X  ...
+$0260: $E4AA:     $4A -> r26
+$0261: $E0B1:     $01 -> r27
+               F: @DataIn -> Y  ...
+$0262: $E4CE:     $4E -> r28
+$0263: $E0D1:     $01 -> r29
+$0264: $E034:  F: $04 -> r19 (4 -> r19)
+-----          L: 
+$0265: $900D:  F: [X++] -> r0 ([X++] -> r0)
+$0266: $DFDD:  F: rcall $244 (spi_SendByte)
+$0267: $9209:  F: r0 -> [Y++] (r0 -> [Y++])
+               C: if (r19 --) then goto $0265 ...
+$0268: $953A:     r19 --
+$0269: $F7D9:     if (Z=0) then goto $265
+$026A: $9508:  F: RET (Ret)
+*********   D:\anwork\ArduinoISP\ALG328\CRC.alg    ***********
+-----          V: crc_Receive
+               F: CRC -> Z  ...
+$026B: $91E0:     [$0152] -> r30
+$026C: $0152:  
+$026D: $91F0:     [$0153] -> r31
+$026E: $0153:  
+$026F: $DDC5:  F: rcall $35 (usart_ReceiveByte_)
+$0270: $2FC2:  F: r18 -> r28 (r18 -> YL)
+$0271: $DDC3:  F: rcall $35 (usart_ReceiveByte_)
+$0272: $2FD2:  F: r18 -> r29 (r18 -> YH)
+               C: if (Z -= Y) then goto $037F ...
+$0273: $17EC:     r30 = r28
+$0274: $07FD:     r31 = r29=
+$0275: $F009:     if (Z=1) then goto $277
+$0276: $C108:     goto $37F (RJMP)
+$0277: $9508:  F: RET (Ret)
+-----          V: crc_Transmit
+               F: CRC -> Y  ...
+$0278: $91C0:     [$0152] -> r28
+$0279: $0152:  
+$027A: $91D0:     [$0153] -> r29
+$027B: $0153:  
+$027C: $2F2C:  F: r28 -> r18 (YL -> r18)
+$027D: $DDCB:  F: rcall $49 (usart_TransmitByte_)
+$027E: $2F2D:  F: r29 -> r18 (YH -> r18)
+$027F: $DDC9:  F: rcall $49 (usart_TransmitByte_)
+$0280: $DDD6:  F: rcall $57 (usart_WaitFor_TXC)
+$0281: $9508:  F: RET (Ret)
+-----          V: crc_Add_
+               F: CRC -> X  ...
+$0282: $91A0:     [$0152] -> r26
+$0283: $0152:  
+$0284: $91B0:     [$0153] -> r27
+$0285: $0153:  
+$0286: $270A:  F: r16 ^ r26 (r16 ^ XL)
+$0287: $2F10:  F: r16 -> r17 (r16 -> r17)
+$0288: $9512:  F: >> r17 << (>> r17 <<)
+$0289: $7F10:  F: r17 & $F0 (r17 & $F0)
+$028A: $2701:  F: r16 ^ r17 (r16 ^ r17)
+$028B: $2F10:  F: r16 -> r17 (r16 -> r17)
+$028C: $9516:  F: r17 >> (r17 >>)
+$028D: $9516:  F: r17 >> (r17 >>)
+$028E: $9516:  F: r17 >> (r17 >>)
+$028F: $9516:  F: r17 >> (r17 >>)
+$0290: $9516:  F: r17 >> (r17 >>)
+$0291: $2FAB:  F: r27 -> r26 (XH -> XL)
+$0292: $2FB0:  F: r16 -> r27 (r16 -> XH)
+$0293: $27B1:  F: r27 ^ r17 (XH ^ r17)
+$0294: $2F10:  F: r16 -> r17 (r16 -> r17)
+$0295: $0F11:  F: << r17 (<< r17)
+$0296: $0F11:  F: << r17 (<< r17)
+$0297: $0F11:  F: << r17 (<< r17)
+$0298: $27A1:  F: r26 ^ r17 (XL ^ r17)
+$0299: $9502:  F: >> r16 << (>> r16 <<)
+$029A: $700F:  F: r16 & $0F (r16 & $0F)
+$029B: $27A0:  F: r26 ^ r16 (XL ^ r16)
+               F: X -> CRC  ...
+$029C: $93A0:     r26 -> [$0152]
+$029D: $0152:  
+$029E: $93B0:     r27 -> [$0153]
+$029F: $0153:  
+$02A0: $9508:  F: RET (Ret)
+*********   D:\anwork\ArduinoISP\ALG328\Monitor.alg    ***********
+-----          V: ResetMonitorChip
+$02A1: $DFC9:  F: rcall $26B (crc_Receive)
+               F: $FFFF -> CRC  ...
+$02A2: $EF0F:     $FF -> r16
+$02A3: $9300:     r16 -> [$0152]
+$02A4: $0152:  
+$02A5: $9300:     r16 -> [$0153]
+$02A6: $0153:  
+$02A7: $E02A:  F: $0A -> r18 (10 -> r18)
+$02A8: $DDA0:  F: rcall $49 (usart_TransmitByte_)
+$02A9: $DFCE:  F: rcall $278 (crc_Transmit)
+$02AA: $DF94:  F: rcall $23F (spi_ResetChip)
+$02AB: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+$02AC: $9A56:  F: 1 -> p$0A.6 (1 -> LED)
+$02AD: $D06F:  F: rcall $31D (mon_WaitForBreakPoint)
+$02AE: $9508:  F: RET (Ret)
+-----          V: NextMonitorChipBreakPoint
+               F: @mon_Instruction -> Y  ...
+$02AF: $E5C4:     $54 -> r28
+$02B0: $E0D1:     $01 -> r29
+$02B1: $E045:  F: $05 -> r20 (5 -> r20)
+-----          L: 
+$02B2: $DD82:  F: rcall $35 (usart_ReceiveByte_)
+$02B3: $9329:  F: r18 -> [Y++] (r18 -> [Y++])
+               C: if (r20 --) then goto $02B2 ...
+$02B4: $954A:     r20 --
+$02B5: $F7E1:     if (Z=0) then goto $2B2
+$02B6: $DFB4:  F: rcall $26B (crc_Receive)
+$02B7: $9A56:  F: 1 -> p$0A.6 (1 -> LED)
+               F: @mon_Instruction -> Y  ...
+$02B8: $E5C4:     $54 -> r28
+$02B9: $E0D1:     $01 -> r29
+$02BA: $E045:  F: $05 -> r20 (5 -> r20)
+-----          L: 
+$02BB: $D044:  F: rcall $300 (mon_BitPause)
+$02BC: $9109:  F: [Y++] -> r16 ([Y++] -> r16)
+$02BD: $D02A:  F: rcall $2E8 (mon_TransmitByte_)
+               C: if (r20 --) then goto $02BB ...
+$02BE: $954A:     r20 --
+$02BF: $F7D9:     if (Z=0) then goto $2BB
+$02C0: $D05C:  F: rcall $31D (mon_WaitForBreakPoint)
+$02C1: $9508:  F: RET (Ret)
+-----          V: MonitorChipInstruction
+               F: @mon_Instruction -> Y  ...
+$02C2: $E5C4:     $54 -> r28
+$02C3: $E0D1:     $01 -> r29
+$02C4: $E046:  F: $06 -> r20 (6 -> r20)
+-----          L: 
+$02C5: $DD6F:  F: rcall $35 (usart_ReceiveByte_)
+$02C6: $9329:  F: r18 -> [Y++] (r18 -> [Y++])
+               C: if (r20 --) then goto $02C5 ...
+$02C7: $954A:     r20 --
+$02C8: $F7E1:     if (Z=0) then goto $2C5
+$02C9: $DFA1:  F: rcall $26B (crc_Receive)
+$02CA: $9A56:  F: 1 -> p$0A.6 (1 -> LED)
+               F: @mon_Instruction -> Y  ...
+$02CB: $E5C4:     $54 -> r28
+$02CC: $E0D1:     $01 -> r29
+$02CD: $E045:  F: $05 -> r20 (5 -> r20)
+-----          L: 
+$02CE: $D031:  F: rcall $300 (mon_BitPause)
+$02CF: $9109:  F: [Y++] -> r16 ([Y++] -> r16)
+$02D0: $D017:  F: rcall $2E8 (mon_TransmitByte_)
+               C: if (r20 --) then goto $02CE ...
+$02D1: $954A:     r20 --
+$02D2: $F7D9:     if (Z=0) then goto $2CE
+$02D3: $9100:  F: [$0158] -> r16 (mon_Command -> r16)
+$02D4: $0158:  
+               C: if (r16 = 1) then goto $02E1 ...
+$02D5: $3001:     r16 = $01
+$02D6: $F051:     if (Z=1) then goto $2E1
+               C: if (r16 = 3) then goto $02E1 ...
+$02D7: $3003:     r16 = $03
+$02D8: $F041:     if (Z=1) then goto $2E1
+               C: if (r16 = 0) then goto $02DF ...
+$02D9: $3000:     r16 = $00
+$02DA: $F021:     if (Z=1) then goto $2DF
+$02DB: $DF2B:  F: rcall $207 (spi_1_ms)
+$02DC: $9100:  F: [$0159] -> r16 (mon_WriteByte -> r16)
+$02DD: $0159:  
+$02DE: $D009:  F: rcall $2E8 (mon_TransmitByte_)
+-----          L: 
+$02DF: $9856:  F: 0 -> p$0A.6 (0 -> LED)
+$02E0: $9508:  F: RET (Ret)
+-----          V: 
+               F: mon_Count -> W  ...
+$02E1: $9180:     [$0156] -> r24
+$02E2: $0156:  
+$02E3: $9190:     [$0157] -> r25
+$02E4: $0157:  
+$02E5: $D083:  F: rcall $369 (mon_ReceiveBytes_)
+$02E6: $9856:  F: 0 -> p$0A.6 (0 -> LED)
+$02E7: $9508:  F: RET (Ret)
+-----          V: mon_TransmitByte_
+$02E8: $9A52:  F: 1 -> p$0A.2 (1 -> mon_DD)
+$02E9: $9A5A:  F: 1 -> p$0B.2 (1 -> mon_Port)
+$02EA: $0000:  F: NOP (NOP)
+$02EB: $0000:  F: NOP (NOP)
+$02EC: $0000:  F: NOP (NOP)
+$02ED: $0000:  F: NOP (NOP)
+$02EE: $D011:  F: rcall $300 (mon_BitPause)
+$02EF: $E018:  F: $08 -> r17 (8 -> r17)
+-----          L: 
+$02F0: $9506:  F: r16 >> (r16 >>)
+$02F1: $F018:  C: if (C=1) then goto $2F5 (C = 1)
+$02F2: $0000:  F: NOP (NOP)
+$02F3: $9A5A:  F: 1 -> p$0B.2 (1 -> mon_Port)
+$02F4: $C003:  J: goto $2F8 (RJMP)
+-----          V: 
+$02F5: $985A:  F: 0 -> p$0B.2 (0 -> mon_Port)
+$02F6: $0000:  F: NOP (NOP)
+$02F7: $9488:  F: 0 -> .C (0 -> C)
+-----          L: 
+$02F8: $D007:  F: rcall $300 (mon_BitPause)
+               C: if (r17 --) then goto $02F0 ...
+$02F9: $951A:     r17 --
+$02FA: $F7A9:     if (Z=0) then goto $2F0
+$02FB: $0000:  F: NOP (NOP)
+$02FC: $985A:  F: 0 -> p$0B.2 (0 -> mon_Port)
+$02FD: $D002:  F: rcall $300 (mon_BitPause)
+$02FE: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+$02FF: $9508:  F: RET (Ret)
+-----          V: mon_BitPause
+$0300: $01D1:  F: r2,r3 -> r26,r27 (rr2 -> X)
+-----          L: 
+$0301: $9711:  F: r26,r27 - $01 (X - 1)
+$0302: $F7F1:  C: if (Z=0) then goto $301 (-=)
+$0303: $0000:  F: NOP (NOP)
+$0304: $0000:  F: NOP (NOP)
+$0305: $9508:  F: RET (Ret)
+-----          V: mon_ReceiveByte_
+$0306: $9852:  F: 0 -> p$0A.2 (0 -> mon_DD)
+-----          L: 
+$0307: $9B4A:  C: if (p$09.2=1 then SKIP (mon_Pin = 0)
+$0308: $CFFE:  C: goto $307 (RJMP) (mon_Pin = 0)
+$0309: $0000:  F: NOP (NOP)
+$030A: $0000:  F: NOP (NOP)
+$030B: $0000:  F: NOP (NOP)
+$030C: $0000:  F: NOP (NOP)
+$030D: $01D2:  F: r4,r5 -> r26,r27 (rr4 -> X)
+-----          L: 
+$030E: $9711:  F: r26,r27 - $01 (X - 1)
+$030F: $F7F1:  C: if (Z=0) then goto $30E (-=)
+$0310: $E018:  F: $08 -> r17 (8 -> r17)
+-----          L: 
+$0311: $0000:  F: NOP (NOP)
+$0312: $9B4A:  C: if (p$09.2=1 then SKIP (mon_Pin = 0)
+$0313: $C002:  C: goto $316 (RJMP) (mon_Pin = 0)
+$0314: $9488:  F: 0 -> .C (0 -> C)
+$0315: $C002:  J: goto $318 (RJMP)
+-----          V: 
+$0316: $9408:  F: 1 -> .C (1 -> C)
+$0317: $0000:  F: NOP (NOP)
+-----          L: 
+$0318: $9507:  F: > r16 >> (> r16 >>)
+$0319: $DFE6:  F: rcall $300 (mon_BitPause)
+               C: if (r17 --) then goto $0311 ...
+$031A: $951A:     r17 --
+$031B: $F7A9:     if (Z=0) then goto $311
+$031C: $9508:  F: RET (Ret)
+-----          V: mon_WaitForBreakPoint
+$031D: $9478:  F: 1 -> I (1 -> I)
+               F: 0 -> X  ...
+$031E: $E0A0:     $00 -> r26
+$031F: $E0B0:     $00 -> r27
+               F: 0 -> Y  ...
+$0320: $E0C0:     $00 -> r28
+$0321: $E0D0:     $00 -> r29
+-----          L: 
+$0322: $9B4A:  C: if (p$09.2=1 then SKIP (mon_Pin = 0)
+$0323: $CFFE:  C: goto $322 (RJMP) (mon_Pin = 0)
+-----          L: 
+$0324: $994A:  C: if (p$09.2=0 then SKIP (mon_Pin = 1)
+$0325: $CFFE:  C: goto $324 (RJMP) (mon_Pin = 1)
+-----          L: 
+$0326: $9611:  F: r26,r27 + $01 (X + 1)
+$0327: $9B4A:  C: if (p$09.2=1 then SKIP (mon_Pin = 0)
+$0328: $CFFD:  C: goto $326 (RJMP) (mon_Pin = 0)
+-----          L: 
+$0329: $9621:  F: r28,r29 + $01 (Y + 1)
+$032A: $994A:  C: if (p$09.2=0 then SKIP (mon_Pin = 1)
+$032B: $CFFD:  C: goto $329 (RJMP) (mon_Pin = 1)
+$032C: $01CD:  F: r26,r27 -> r24,r25 (X -> W)
+               F: W + Y  ...
+$032D: $0F8C:     r24 + r28
+$032E: $1F9D:     r25 + r29 +
+               F: X - Y  ...
+$032F: $1BAC:     r26 - r28
+$0330: $0BBD:     r27 - r29 -
+               F: X - Y  ...
+$0331: $1BAC:     r26 - r28
+$0332: $0BBD:     r27 - r29 -
+               F: X - Y  ...
+$0333: $1BAC:     r26 - r28
+$0334: $0BBD:     r27 - r29 -
+$0335: $F438:  C: if (C=0) then goto $33D (C = 0)
+               F: - X  ...
+$0336: $E000:     $00 -> r16
+$0337: $1B0A:     r16 - r26
+$0338: $2FA0:     r16 -> r26
+$0339: $E000:     $00 -> r16
+$033A: $0B0B:     r16 - r27 -
+$033B: $2FB0:     r16 -> r27
+$033C: $C007:  J: goto $344 (RJMP)
+-----          V: 
+$033D: $0000:  F: NOP (NOP)
+$033E: $0000:  F: NOP (NOP)
+$033F: $0000:  F: NOP (NOP)
+$0340: $0000:  F: NOP (NOP)
+$0341: $0000:  F: NOP (NOP)
+$0342: $0000:  F: NOP (NOP)
+$0343: $0000:  F: NOP (NOP)
+-----          L: 
+$0344: $01FD:  F: r26,r27 -> r30,r31 (X -> Z)
+               F: 6 -> X  ...
+$0345: $E0A6:     $06 -> r26
+$0346: $E0B0:     $00 -> r27
+               F: 0 -> Y  ...
+$0347: $E0C0:     $00 -> r28
+$0348: $E0D0:     $00 -> r29
+               C: if (Z >= 4) then goto $0326 ...
+$0349: $30E4:     r30 = $04
+$034A: $E010:     $00 -> r17
+$034B: $07F1:     r31 = r17=
+$034C: $F6C8:     if ( >= ) then goto $326
+               F: W >>  ...
+$034D: $9596:     r25 >>
+$034E: $9587:     > r24 >>
+               F: W >>  ...
+$034F: $9596:     r25 >>
+$0350: $9587:     > r24 >>
+               F: W >>  ...
+$0351: $9596:     r25 >>
+$0352: $9587:     > r24 >>
+$0353: $01DC:  F: r24,r25 -> r26,r27 (W -> X)
+               F: X >>  ...
+$0354: $95B6:     r27 >>
+$0355: $95A7:     > r26 >>
+               F: X >>  ...
+$0356: $95B6:     r27 >>
+$0357: $95A7:     > r26 >>
+               F: W + X  ...
+$0358: $0F8A:     r24 + r26
+$0359: $1F9B:     r25 + r27 +
+$035A: $012C:  F: r24,r25 -> r4,r5 (W -> rr4)
+$035B: $9705:  F: r24,r25 - $05 (W - 5)
+$035C: $011C:  F: r24,r25 -> r2,r3 (W -> rr2)
+$035D: $01C2:  F: r4,r5 -> r24,r25 (rr4 -> W)
+               F: rr4 >>  ...
+$035E: $9456:     r5 >>
+$035F: $9447:     > r4 >>
+               F: W + rr4  ...
+$0360: $0D84:     r24 + r4
+$0361: $1D95:     r25 + r5 +
+$0362: $9702:  F: r24,r25 - $02 (W - 2)
+$0363: $012C:  F: r24,r25 -> r4,r5 (W -> rr4)
+               F: 8 -> W  ...
+$0364: $E088:     $08 -> r24
+$0365: $E090:     $00 -> r25
+$0366: $D002:  F: rcall $369 (mon_ReceiveBytes_)
+$0367: $9856:  F: 0 -> p$0A.6 (0 -> LED)
+$0368: $9508:  F: RET (Ret)
+-----          V: mon_ReceiveBytes_
+$0369: $9478:  F: 1 -> I (1 -> I)
+-----          L: 
+$036A: $DF9B:  F: rcall $306 (mon_ReceiveByte_)
+$036B: $9300:  F: r16 -> [$00C6] (r16 -> UDR0)
+$036C: $00C6:  
+               C: if (W --) then goto $036A ...
+$036D: $5081:     r24 - $01
+$036E: $4090:     r25 - $00 -
+$036F: $F7D1:     if (Z=0) then goto $36A
+$0370: $94F8:  F: 0 -> I (0 -> I)
+$0371: $9508:  F: RET (Ret)
+*********   D:\anwork\ArduinoISP\ALG328\CommAdapter.alp    ***********
+-----          V: t_Performers
+$0372: $84 $00
+$0373: $B8 $00
+$0374: $C5 $00
+$0375: $DE $00
+$0376: $ED $00
+$0377: $C2 $01
+$0378: $E4 $01
+$0379: $79 $01
+$037A: $CD $01
+$037B: $9B $01
+$037C: $A1 $02
+$037D: $C2 $02
+$037E: $AF $02
+-----          L: Performers_End
+-----          V: Reset
+-----          L: 
+$037F: $EF0F:  S: $FF -> r16 ($FF->r16)
+$0380: $BF0D:  S: r16 -> p$3D (r16->p61)
+$0381: $E008:  S: $08 -> r16 ($08->r16)
+$0382: $BF0E:  S: r16 -> p$3E (r16->p62)
+$0383: $E000:  S: $00 -> r16 ($00->r16)
+$0384: $9300:  S: r16 -> [$00C5] (r16->UBRR0H)
+$0385: $00C5:  
+$0386: $E100:  S: $10 -> r16 ($10->r16)
+$0387: $9300:  S: r16 -> [$00C4] (r16->UBRR0L)
+$0388: $00C4:  
+$0389: $E006:  S: $06 -> r16 ($06->r16)
+$038A: $9300:  S: r16 -> [$00C2] (r16->UCSR0C)
+$038B: $00C2:  
+$038C: $E402:  S: $42 -> r16 ($42->r16)
+$038D: $9300:  S: r16 -> [$00C0] (r16->UCSR0A)
+$038E: $00C0:  
+$038F: $E908:  S: $98 -> r16 ($98->r16)
+$0390: $9300:  S: r16 -> [$00C1] (r16->UCSR0B)
+$0391: $00C1:  
+-----          L: 
+$0392: $0000:  F: NOP (NOP)
+-----          L: 
+$0393: $95A8:  F: WDR (WDR)
+               F: $FFFF -> CRC  ...
+$0394: $EF0F:     $FF -> r16
+$0395: $9300:     r16 -> [$0152]
+$0396: $0152:  
+$0397: $9300:     r16 -> [$0153]
+$0398: $0153:  
+$0399: $24AA:  F: ^ r10 (^ BytesReceived)
+-----          L: 
+               C: if (RXC0 = 0) then goto $039A ...
+$039A: $9100:     [$00C0] -> r16
+$039B: $00C0:  
+$039C: $FF07:     if (r16.7=1 then SKIP
+$039D: $CFFC:     goto $39A (RJMP)
+$039E: $94A3:  F: r10 ++ (BytesReceived ++)
+$039F: $9120:  F: [$00C6] -> r18 (UDR0 -> r18)
+$03A0: $00C6:  
+$03A1: $2F02:  F: r18 -> r16 (r18 -> r16)
+$03A2: $DEDF:  F: rcall $282 (crc_Add_)
+               F: t_Performers -> Z  ...
+$03A3: $E7E2:     $72 -> r30
+$03A4: $E0F3:     $03 -> r31
+               F: Z + r18  ...
+$03A5: $0FE2:     r30 + r18
+$03A6: $E010:     $00 -> r17
+$03A7: $1FF1:     r31 + r17 +
+               C: if (Z >= Performers_End) then goto $037F ...
+$03A8: $37EF:     r30 = $7F
+$03A9: $E013:     $03 -> r17
+$03AA: $07F1:     r31 = r17=
+$03AB: $F698:     if ( >= ) then goto $37F
+               F: << Z  ...
+$03AC: $0FEE:     << r30
+$03AD: $1FFF:     << r31 <
+               F: LPM[Z++]:Word -> W  ...
+$03AE: $9185:     LPM[Z++] -> r24
+$03AF: $9195:     LPM[Z++] -> r25
+$03B0: $01FC:  F: r24,r25 -> r30,r31 (W -> Z)
+$03B1: $9509:  F: CALL[Z] (Call[Z])
+$03B2: $95A8:  F: WDR (WDR)
+$03B3: $CFDF:  J: goto $393 (RJMP)
